@@ -24,9 +24,10 @@
             pkgs = nixpkgs.legacyPackages.${system};
           in rec {
             fuzzing = pkgs.mkShell (import ./env/fuzzing.nix { inherit pkgs; });
+            rust = pkgs.mkShell (import ./env/rust.nix { inherit pkgs; });
 
             default = pkgs.mkShell {
-              inputsFrom = [ fuzzing ];
+              inputsFrom = [ fuzzing rust ];
             };
           }
         );
