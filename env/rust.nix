@@ -18,4 +18,9 @@
     # Set ARM cross-compiler for no-std targets.
     CC_thumbv7m_none_eabi = "${pkgs.gcc-arm-embedded}/bin/arm-none-eabi-gcc";
   };
+
+  # Shell hook to add rustup-managed tools to PATH.
+  shellHook = ''
+    export PATH="$HOME/.cargo/bin:$PATH"
+  '';
 }

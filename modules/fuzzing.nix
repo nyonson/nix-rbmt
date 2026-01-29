@@ -19,6 +19,7 @@ let
   cfg = config.services.cargo-fuzz;
   fuzzEnv = import ../env/fuzzing.nix { inherit pkgs; };
   gitLib = import ../lib/git.nix { inherit pkgs; };
+  notifyLib = import ../lib/notify.nix { inherit pkgs; };
 in {
   options.services.cargo-fuzz = {
     enable = mkEnableOption "cargo-fuzz continuous fuzzing services";
@@ -163,17 +164,14 @@ in {
         notifyService = optionalAttrs cfg.email.enable {
           "cargo-fuzz-notify@" = {
             description = "Send email notification for failed cargo-fuzz service";
-            serviceConfig.Type = "oneshot";
-            script = ''
-              (
-                echo "To: ${cfg.email.address}"
-                echo "Subject: Fuzzing failure: $1"
-                echo ""
-                ${pkgs.systemd}/bin/journalctl -u "$1" -n 50
-              ) | ${pkgs.system-sendmail}/bin/sendmail -i -t
-            '';
-            # Pass the service name in.
-            scriptArgs = "%i";
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = notifyLib.mkEmailNotification {
+                email = cfg.email.address;
+                subject = "Fuzzing failure: %i";
+                body = "Service %i has failed. Check systemd logs for details.";
+              };
+            };
           };
         };
 
