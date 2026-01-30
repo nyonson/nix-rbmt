@@ -188,8 +188,9 @@ in {
             description = "Continuous fuzzing: ${projectName}/${targetName}";
             after = [ "network.target" ];
             wantedBy = [ "multi-user.target" ];
-            # cargo-fuzz needs rust toolchain and C/C++ compiler to build fuzz targets.
-            path = [ cfg.nightlyToolchain ] ++ fuzzEnv.packages;
+            # cargo-fuzz needs a nightly rust toolchain and
+            # git is needed for the ExecStartPre checkout script.
+            path = [ cfg.nightlyToolchain pkgs.git ] ++ fuzzEnv.packages;
           } // optionalAttrs cfg.email.enable {
             onFailure = [ "cargo-fuzz-notify@%n.service" ];
           } // {
