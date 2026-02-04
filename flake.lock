@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "bitcoin-maintainer-tools": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770025293,
+        "narHash": "sha256-5Kuc3MQLvFiDnQfxrR5ToBGcXLY4IlNCpl15c/eJgFQ=",
+        "owner": "bitcoin-core",
+        "repo": "bitcoin-maintainer-tools",
+        "rev": "3dec1b2561985f53fca7b934a81e713614f0cb87",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bitcoin-core",
+        "repo": "bitcoin-maintainer-tools",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -39,6 +55,7 @@
     },
     "root": {
       "inputs": {
+        "bitcoin-maintainer-tools": "bitcoin-maintainer-tools",
         "fenix": "fenix",
         "nixpkgs": "nixpkgs"
       }
