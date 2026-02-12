@@ -15,7 +15,7 @@
 
   # Environment variables.
   env = {
-    # Set ARM cross-compiler for no-std targets.
+    # Set ARM cross-compiler for no_std targets.
     CC_thumbv7m_none_eabi = "${pkgs.gcc-arm-embedded}/bin/arm-none-eabi-gcc";
   };
 }
