@@ -26,6 +26,8 @@
       devShells = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system:
           let
             pkgs = nixpkgs.legacyPackages.${system};
+            lib = nixpkgs.lib;
+            shells = import ./lib/shells.nix { inherit lib; };
             rust = import ./env/rust.nix { inherit pkgs; };
             maintainerTools = import ./env/maintainer-tools.nix {
               inherit pkgs bitcoin-maintainer-tools;
@@ -36,7 +38,7 @@
             maintainer-tools = pkgs.mkShell maintainerTools;
             fuzzing = pkgs.mkShell fuzzing;
             default = pkgs.mkShell
-              (nixpkgs.lib.mergeAttrsList [ rust maintainerTools ]);
+              (shells.mergeShells [ rust maintainerTools ]);
           }
         );
     };
