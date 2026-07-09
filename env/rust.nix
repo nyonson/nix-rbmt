@@ -17,5 +17,7 @@
   env = {
     # Set ARM cross-compiler for no_std targets.
     CC_thumbv7m_none_eabi = "${pkgs.gcc-arm-embedded}/bin/arm-none-eabi-gcc";
+    # Use concise progress-style output for cargo-rbmt.
+    RBMT_LOG_LEVEL = "progress";
   };
 }

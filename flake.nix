@@ -7,13 +7,9 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    bitcoin-maintainer-tools = {
-      url = "github:bitcoin-core/bitcoin-maintainer-tools";
-      flake = false;
-    };
   };
 
-  outputs = { self, nixpkgs, fenix, bitcoin-maintainer-tools }: {
+  outputs = { self, nixpkgs, fenix }: {
       nixosModules = {
         fuzzing = import ./modules/fuzzing.nix;
 
@@ -26,19 +22,12 @@
       devShells = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system:
           let
             pkgs = nixpkgs.legacyPackages.${system};
-            lib = nixpkgs.lib;
-            shells = import ./lib/shells.nix { inherit lib; };
             rust = import ./env/rust.nix { inherit pkgs; };
-            maintainerTools = import ./env/maintainer-tools.nix {
-              inherit pkgs bitcoin-maintainer-tools;
-            };
             fuzzing = import ./env/fuzzing.nix { inherit pkgs; };
           in {
             rust = pkgs.mkShell rust;
-            maintainer-tools = pkgs.mkShell maintainerTools;
             fuzzing = pkgs.mkShell fuzzing;
-            default = pkgs.mkShell
-              (shells.mergeShells [ rust maintainerTools ]);
+            default = pkgs.mkShell rust;
           }
         );
     };
